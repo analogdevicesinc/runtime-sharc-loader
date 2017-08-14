@@ -154,13 +154,12 @@ main()
   /*Register the load function. */
   bootConfig.bootRegistry.pLoadFunction= mboot_load;
 
+
+  /* bootrom uses mdma1 - make secure in case any memory is secure */
+  *pREG_SPU0_SECUREP90 = 3;
+  *pREG_SPU0_SECUREP91 = 3;
+
   adi_rom_BootKernel(pBootStructPointer);
-
-#if 0
-  if(result != ROM_BOOT_SUCCESS)
-    while(1);
-#endif
-
 
   mailbox2arm = 0x5555;            // tell Arm that Sharc is working
   ldSync2ArmByteCount = -1;        // tell ARM that no more data is needed
